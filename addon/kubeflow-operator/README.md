@@ -28,7 +28,7 @@ spec:
     name: bjg9qmhctj
     uid: 30c13f8b-235e-4512-8673-d9b0f3a41f27
   name: kubeflow-operator
-  variables: |
+  variables:
     {
       "DashboardURI": "kubeflow.mydomain.io",
       "IstioIngressGatewayServiceType": "LoadBalancer",

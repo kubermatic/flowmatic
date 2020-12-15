@@ -16,7 +16,7 @@ spec:
     name: <CLUSTER_NAME>
     uid: <CLUSTER_UID>
   name: kubeflow-operator
-  variables: |
+  variables:
     {
       "DashboardURI": "kubeflow.mydomain.io",
       "IstioIngressGatewayServiceType": "LoadBalancer",
