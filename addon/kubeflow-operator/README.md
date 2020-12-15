@@ -28,7 +28,13 @@ spec:
     name: bjg9qmhctj
     uid: 30c13f8b-235e-4512-8673-d9b0f3a41f27
   name: kubeflow-operator
-  variables: {"DashboardURI":"kubeflow.mydomain.io","IstioIngressGatewayServiceType":"LoadBalancer","OIDCProviderURL":"https://dev.kubermatic.io/dex"}
+  variables: |
+    {
+      "DashboardURI": "kubeflow.mydomain.io",
+      "IstioIngressGatewayServiceType": "LoadBalancer",
+      "OIDCProviderURL": "https://dev.kubermatic.io/dex",
+      "OIDCSecret": "NQh4P9fIDlEyI6EMKW66TLKLdcIStT4C02"
+    }
 ```
 
 ## OIDC Provider Configuration
@@ -39,7 +45,7 @@ The plugin allows pointing to an external OIDC provider of user's choice. To hav
         - http://kubeflow.mydomain.io/login/oidc
       id: kubeflow-oidc-authservice
       name: kubeflow-oidc-authservice
-      secret: pUBnBOY80SnXgjibTYM9ZWNzY2xreNGQok
+      secret: NQh4P9fIDlEyI6EMKW66TLKLdcIStT4C02
 ```
 
 ## Addon Maintenance
