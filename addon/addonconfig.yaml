@@ -1,0 +1,12 @@
+apiVersion: kubermatic.k8s.io/v1
+kind: AddonConfig
+metadata:
+  name: kubeflow-operator
+spec:
+  description: "KubeFlow Operator"
+  formSpec:
+    - displayName: "Istio Ingress Gateway Service Type"
+      internalName: "IstioIngressGatewayServiceType"
+      helpText: "Type of istio ingress gateway service, can be set to ClusterIP, NodePort or LoadBalancer."
+      required: false
+      type: string
