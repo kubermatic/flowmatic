@@ -197,6 +197,32 @@ spec:
         name: manifests
         path: cert-manager/cert-manager-crds
     name: cert-manager-crds
+{{ if .Variables.OIDCProviderURL }}
+  - kustomizeConfig:
+      overlays:
+        - application
+      parameters:
+        - name: namespace
+          value: istio-system
+        - name: userid-header
+          value: kubeflow-userid
+        - name: oidc_provider
+          value: {{ .Variables.OIDCProviderURL }}
+        - name: oidc_auth_url
+          value: {{ .Variables.OIDCProviderURL }}/auth
+        - name: oidc_redirect_uri
+          value: http://{{ .Variables.DashboardURI }}/login/oidc
+        - name: client_id
+          value: kubeflow-oidc-authservice
+      {{ if .Variables.OIDCSecret }}
+        - name: application_secret
+          value: {{ .Variables.OIDCSecret }}
+      {{ end }}
+      repoRef:
+        name: manifests
+        path: istio/oidc-authservice
+    name: oidc-authservice
+{{ end }}
   - kustomizeConfig:
       parameters:
       - name: namespace

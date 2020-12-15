@@ -16,4 +16,4 @@ spec:
     name: <CLUSTER_NAME>
     uid: <CLUSTER_UID>
   name: kubeflow-operator
-  variables: {"IstioIngressGatewayServiceType":"LoadBalancer"}
+  variables: {"DashboardURI":"kubeflow.mydomain.io","IstioIngressGatewayServiceType":"LoadBalancer","OIDCProviderURL":"https://dev.kubermatic.io/dex"}
