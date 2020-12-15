@@ -17,4 +17,3 @@ spec:
     uid: <CLUSTER_UID>
   name: kubeflow-operator
   variables: {"IstioIngressGatewayServiceType":"LoadBalancer"}
-

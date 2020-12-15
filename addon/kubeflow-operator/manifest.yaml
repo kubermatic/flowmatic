@@ -474,4 +474,3 @@ spec:
   - name: flowmatic
     uri: https://github.com/kubermatic/flowmatic/archive/master.tar.gz
   version: master
-
