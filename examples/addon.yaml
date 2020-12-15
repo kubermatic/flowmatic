@@ -1,0 +1,20 @@
+apiVersion: kubermatic.k8s.io/v1
+kind: Addon
+metadata:
+  name: kubeflow-operator
+  namespace: <NAMESPACE>
+  ownerReferences:
+  - apiVersion: kubermatic.k8s.io/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: Cluster
+    name: <CLUSTER_NAME>
+    uid: <CLUSTER_UID>
+spec:
+  cluster:
+    kind: Cluster
+    name: <CLUSTER_NAME>
+    uid: <CLUSTER_UID>
+  name: kubeflow-operator
+  variables: {"IstioIngressGatewayServiceType":"LoadBalancer"}
+
