@@ -8,7 +8,7 @@ resources:
 
 
 configMapGenerator:
-- name: istio-production-config
+- name: ingressgateway-acme-cert-parameters
   envs:
   - params.env
 
