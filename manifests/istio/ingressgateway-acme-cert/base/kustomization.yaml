@@ -4,7 +4,6 @@ namespace: istio-system
 
 resources:
 - certificate.yaml
-- issuer.yaml
 
 
 configMapGenerator:
@@ -23,13 +22,6 @@ vars:
     apiVersion: v1
   fieldref:
     fieldpath: data.domain
-- name: email
-  objref:
-    kind: ConfigMap
-    name: ingressgateway-acme-cert-parameters
-    apiVersion: v1
-  fieldref:
-    fieldpath: data.email
 
 configurations:
 - params.yaml

@@ -5,8 +5,3 @@ varReference:
   kind: Certificate
 - path: spec/dnsNames
   kind: Certificate
-- path: metadata/name
-  kind: Issuer
-- path: spec/acme/email
-  kind: Issuer
-
