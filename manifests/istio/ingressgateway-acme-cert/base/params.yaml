@@ -1,0 +1,8 @@
+varReference:
+- path: metadata/name
+  kind: Certificate
+- path: metadata/name
+  kind: Issuer
+- path: spec/acme/email
+  kind: Issuer
+
