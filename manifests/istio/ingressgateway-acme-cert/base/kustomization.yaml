@@ -5,7 +5,6 @@ namespace: istio-system
 resources:
 - certificate.yaml
 
-
 configMapGenerator:
 - name: ingressgateway-acme-cert-parameters
   envs:
@@ -25,4 +24,3 @@ vars:
 
 configurations:
 - params.yaml
-
