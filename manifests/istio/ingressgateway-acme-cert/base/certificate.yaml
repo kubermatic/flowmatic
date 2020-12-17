@@ -10,5 +10,5 @@ spec:
   commonName: $(domain)
   isCA: true
   issuerRef:
-    kind: ClusterIssuer
-    name: letsencrypt-prod
+    kind: Issuer
+    name: letsencrypt-staging
