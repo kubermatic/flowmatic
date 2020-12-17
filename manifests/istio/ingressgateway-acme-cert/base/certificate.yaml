@@ -1,7 +1,6 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  namespace: $(namespace)
   name: istio-ingressgateway-certs
 spec:
   secretName: istio-ingressgateway-certs

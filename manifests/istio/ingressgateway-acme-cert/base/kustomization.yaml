@@ -38,7 +38,6 @@ vars:
   fieldref:
     fieldpath: data.acmeUrl
 
-
 configurations:
 - params.yaml
 
