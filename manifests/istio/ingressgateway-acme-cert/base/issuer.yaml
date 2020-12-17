@@ -6,8 +6,7 @@ metadata:
 spec:
   acme:
     email: $(email)
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
-    # server: https://acme-v02.api.letsencrypt.org/directory
+    server: $(acmeUrl)
     privateKeySecretRef:
       name: example-issuer-account-key
     solvers:
