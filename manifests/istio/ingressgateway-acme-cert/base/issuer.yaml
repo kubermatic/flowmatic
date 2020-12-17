@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata:
-  name: letsencrypt-staging
+  name: acme
 spec:
   acme:
     email: $(email)

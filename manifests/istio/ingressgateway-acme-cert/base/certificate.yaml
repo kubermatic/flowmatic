@@ -10,4 +10,4 @@ spec:
   isCA: true
   issuerRef:
     kind: Issuer
-    name: letsencrypt-staging
+    name: acme
