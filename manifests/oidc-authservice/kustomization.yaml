@@ -6,6 +6,7 @@ resources:
 
 configMapGenerator:
   - name: oidc-authservice-parameters
+    behavior: merge
     envs:
       - params.env
 
