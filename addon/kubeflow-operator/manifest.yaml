@@ -477,7 +477,7 @@ spec:
       - istio
       parameters:
       - name: admin
-        value: ""
+        value: "{{ .Cluster.OwnerEmail }}"
       - name: userid-header
         value: kubeflow-userid
       repoRef:
