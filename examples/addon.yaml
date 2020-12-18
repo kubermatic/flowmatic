@@ -21,5 +21,6 @@ spec:
       "DashboardURI": "kubeflow.mydomain.io",
       "IstioIngressGatewayServiceType": "LoadBalancer",
       "OIDCProviderURL": "https://dev.kubermatic.io/dex",
-      "OIDCSecret": "NQh4P9fIDlEyI6EMKW66TLKLdcIStT4C02"
+      "OIDCSecret": "NQh4P9fIDlEyI6EMKW66TLKLdcIStT4C02",
+      "EnableTLS": false
     }

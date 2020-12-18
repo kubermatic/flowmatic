@@ -5,6 +5,11 @@ metadata:
 spec:
   description: "KubeFlow Operator"
   formSpec:
+    - displayName: "Enable TLS"
+      internalName: "EnableTLS"
+      helpText: "Certificate will be issued for the Dashboard URI domain. Make sure to set up you DNS accordingly."
+      required: false
+      type: bool
     - displayName: "Dashboard URI"
       internalName: "DashboardURI"
       helpText: "URI (domain name) that will be used to access the KubeFlow dashboard. Make sure to set up you DNS accordingly."
