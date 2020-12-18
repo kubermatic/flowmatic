@@ -2,7 +2,7 @@
 This is a KubeFlow [addon for Kubermatic Kubernetes Platform](https://docs.kubermatic.com/kubermatic/master/advanced/addons/).
 
 The KubeFlow addon provides the following optional config options:
-- `DashboardURI` (string): URI (domain name or IP address) that will be used to access the KubeFlow dashboard. If using a domain name, make sure to set up you DNS accordingly.
+- `DashboardURI` (string): URI (domain name) that will be used to access the KubeFlow dashboard. Make sure to set up you DNS accordingly.
 - `IstioIngressGatewayServiceType` (string): Type of the istioingressgateway service, used to access KubeFlow dashboard. It can be set to `ClusterIP`, `NodePort` or `LoadBalancer`.
 - `OIDCProviderURL` (string): URL of external OIDC provider, e.g. Kubermatic Dex instance. Make sure that `DashboardURI` is specified if you are using this. If not specified, no authentication is used (very insecure!).
 - `OIDCSecret` (string): Secret string shared between the OIDC provider and KubeFlow. If not provided, [this default](https://github.com/kubeflow/manifests/blob/master/istio/oidc-authservice/base/params.env#L5) is used (insecure!).
@@ -36,6 +36,52 @@ spec:
       "OIDCSecret": "NQh4P9fIDlEyI6EMKW66TLKLdcIStT4C02"
     }
 ```
+
+## Example Gateway
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: challenge
+  namespace: kubeflow
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - '*'
+    port:
+      name: http
+      number: 80
+      protocol: HTTP
+```
+
+
+## Example VirtualService
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: challenge
+  namespace: kubeflow
+spec:
+  gateways:
+  - challenge
+  hosts:
+  - 'kubeflow.example.ru'
+  http:
+  - match:
+    - method:
+        exact: GET
+      uri:
+        prefix: /.well-known/acme-challenge/PQILQ5DARUGg0woJ19lLhNfU-HThRNndmb_epggYv78
+    route:
+    - destination:
+        host: cm-acme-http-solver-frnh4.istio-system.svc.cluster.local
+        port:
+          number: 8089
+```
+
 
 ## OIDC Provider Configuration
 The plugin allows pointing to an external OIDC provider of user's choice. To have OIDC working, the provider itself needs to be configured as well - e.g. in case it is a Dex instance, a `staticClients` entry needs to be added:

@@ -1,0 +1,9 @@
+varReference:
+- path: spec/commonName
+  kind: Certificate
+- path: spec/dnsNames
+  kind: Certificate
+- path: spec/acme/email
+  kind: Issuer
+- path: spec/acme/server
+  kind: Issuer
