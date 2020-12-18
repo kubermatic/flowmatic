@@ -37,6 +37,52 @@ spec:
     }
 ```
 
+## Example Gateway
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: challenge
+  namespace: kubeflow
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - '*'
+    port:
+      name: http
+      number: 80
+      protocol: HTTP
+```
+
+
+## Example VirtualService
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: challenge
+  namespace: kubeflow
+spec:
+  gateways:
+  - challenge
+  hosts:
+  - 'kubeflow.example.ru'
+  http:
+  - match:
+    - method:
+        exact: GET
+      uri:
+        prefix: /.well-known/acme-challenge/PQILQ5DARUGg0woJ19lLhNfU-HThRNndmb_epggYv78
+    route:
+    - destination:
+        host: cm-acme-http-solver-frnh4.istio-system.svc.cluster.local
+        port:
+          number: 8089
+```
+
+
 ## OIDC Provider Configuration
 The plugin allows pointing to an external OIDC provider of user's choice. To have OIDC working, the provider itself needs to be configured as well - e.g. in case it is a Dex instance, a `staticClients` entry needs to be added:
 ```yaml
