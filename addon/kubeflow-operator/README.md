@@ -2,7 +2,7 @@
 This is a KubeFlow [addon for Kubermatic Kubernetes Platform](https://docs.kubermatic.com/kubermatic/master/advanced/addons/).
 
 The KubeFlow addon provides the following optional config options:
-- `DashboardURI` (string): URI (domain name or IP address) that will be used to access the KubeFlow dashboard. If using a domain name, make sure to set up you DNS accordingly.
+- `DashboardURI` (string): URI (domain name) that will be used to access the KubeFlow dashboard. Make sure to set up you DNS accordingly.
 - `IstioIngressGatewayServiceType` (string): Type of the istioingressgateway service, used to access KubeFlow dashboard. It can be set to `ClusterIP`, `NodePort` or `LoadBalancer`.
 - `OIDCProviderURL` (string): URL of external OIDC provider, e.g. Kubermatic Dex instance. Make sure that `DashboardURI` is specified if you are using this. If not specified, no authentication is used (very insecure!).
 - `OIDCSecret` (string): Secret string shared between the OIDC provider and KubeFlow. If not provided, [this default](https://github.com/kubeflow/manifests/blob/master/istio/oidc-authservice/base/params.env#L5) is used (insecure!).

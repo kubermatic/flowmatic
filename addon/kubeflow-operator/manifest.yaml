@@ -162,7 +162,11 @@ spec:
         path: istio/cluster-local-gateway
     name: cluster-local-gateway
   - kustomizeConfig:
+      overlays:
+      - https-gateway
       parameters:
+      - name: gatewaySelector
+        value: ingressgateway
       - name: clusterRbacConfig
         value: "OFF"
       repoRef:
@@ -242,6 +246,20 @@ spec:
         name: manifests
         path: cert-manager/cert-manager
     name: cert-manager
+  - kustomizeConfig:
+      parameters:
+      - name: email
+        value: {{ .TemplateData.ClusterData.OwnerEmail }}
+      - name: acmeUrl
+        value: https://acme-v02.api.letsencrypt.org/directory
+      - name: namespace
+        value: istio-system
+      - name: domain
+        value: {{ .Variables.DashboardURI }}
+      repoRef:
+        name: flowmatic
+        path: manifests/istio/ingressgateway-acme-cert
+    name: ingressgateway-acme-cert
   - kustomizeConfig:
       repoRef:
         name: manifests

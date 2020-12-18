@@ -7,7 +7,7 @@ spec:
   formSpec:
     - displayName: "Dashboard URI"
       internalName: "DashboardURI"
-      helpText: "URI (domain name or IP address) that will be used to access the KubeFlow dashboard. If using a domain name, make sure to set up you DNS accordingly."
+      helpText: "URI (domain name) that will be used to access the KubeFlow dashboard. Make sure to set up you DNS accordingly."
       required: false
       type: string
     - displayName: "Istio Ingress Gateway Service Type"
