@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- github.com/kubeflow/manifests/stacks/kubernetes/application/istio-1-3-1-stack?ref=v1.2-branch
+
+patchesStrategicMerge:
+- istio-ingressgateway-service.yaml
+
+configMapGenerator:
+- name: istio-production-config
+  envs:
+  - params.env
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+vars:
+- name: SERVICE_TYPE
+  objref:
+    kind: ConfigMap
+    name: istio-production-config
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.serviceType
+
+configurations:
+- params.yaml
