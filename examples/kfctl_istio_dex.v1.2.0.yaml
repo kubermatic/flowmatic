@@ -64,7 +64,7 @@ spec:
         - name: application_secret
           value: pUBnBOY80SnXgjibTYM9ZWNzY2xreNGQok
       repoRef:
-        name: test
+        name: flowmatic
         path: manifests/oidc-authservice
     name: oidc-authservice
   - kustomizeConfig:
