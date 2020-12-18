@@ -54,9 +54,18 @@ spec:
         path: metacontroller/base
     name: metacontroller
   - kustomizeConfig:
+      parameters:
+        - name: oidc_provider
+          value: http://dex.auth.svc.cluster.local:5556/dex
+        - name: oidc_redirect_uri
+          value: /login/oidc
+        - name: oidc_auth_url
+          value: /dex/auth
+        - name: application_secret
+          value: pUBnBOY80SnXgjibTYM9ZWNzY2xreNGQok
       repoRef:
-        name: manifests
-        path: stacks/kubernetes/application/oidc-authservice
+        name: test
+        path: manifests/oidc-authservice
     name: oidc-authservice
   - kustomizeConfig:
       repoRef:
