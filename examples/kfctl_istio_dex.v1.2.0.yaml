@@ -92,5 +92,5 @@ spec:
   - name: manifests
     uri: https://github.com/kubeflow/manifests/archive/v1.2-branch.tar.gz
   - name: flowmatic
-    uri: https://github.com/kubermatic/flowmatic/archive/v1.2-branch.tar.gz
+    uri: https://github.com/kubermatic/flowmatic/archive/master.tar.gz
   version: v1.2-branch
