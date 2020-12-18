@@ -249,7 +249,7 @@ spec:
   - kustomizeConfig:
       parameters:
       - name: email
-        value: {{ .TemplateData.ClusterData.OwnerEmail }}
+        value: {{ .Cluster.OwnerEmail }}
       - name: acmeUrl
         value: https://acme-v02.api.letsencrypt.org/directory
       - name: namespace
