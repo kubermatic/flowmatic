@@ -2,10 +2,11 @@
 This is a KubeFlow [addon for Kubermatic Kubernetes Platform](https://docs.kubermatic.com/kubermatic/master/advanced/addons/).
 
 The KubeFlow addon provides the following optional config options:
-- `DashboardURI` (string): URI (domain name) that will be used to access the KubeFlow dashboard. Make sure to set up you DNS accordingly.
-- `IstioIngressGatewayServiceType` (string): Type of the istioingressgateway service, used to access KubeFlow dashboard. It can be set to `ClusterIP`, `NodePort` or `LoadBalancer`.
-- `OIDCProviderURL` (string): URL of external OIDC provider, e.g. Kubermatic Dex instance. Make sure that `DashboardURI` is specified if you are using this. If not specified, no authentication is used (very insecure!).
-- `OIDCSecret` (string): Secret string shared between the OIDC provider and KubeFlow. If not provided, [this default](https://github.com/kubeflow/manifests/blob/master/istio/oidc-authservice/base/params.env#L5) is used (insecure!).
+- `EnableTLS` (boolean): If true, TLS will be enabled, and a certificate will be automatically issued for the specified `DomainName`.
+- `DomainName` (text): Domain name that will be used to access the KubeFlow dashboard. Make sure to set up you DNS accordingly.
+- `IstioIngressGatewayServiceType` (text): Type of the istio-ingressgateway service, used to access KubeFlow dashboard. It can be set to `ClusterIP`, `NodePort` or `LoadBalancer`.
+- `OIDCProviderURL` (text): URL of external OIDC provider, e.g. Kubermatic Dex instance. Make sure that `DomainName` is specified if you are using this. If not provided, static user authentication will be used.
+- `OIDCSecret` (text): Secret string shared between the OIDC provider and KubeFlow. If not provided, [this default](https://github.com/kubeflow/manifests/blob/master/istio/oidc-authservice/base/params.env#L5) is used (insecure!).
 
 ## Example Addon Resources
 For the KubeFlow addon:
@@ -30,14 +31,28 @@ spec:
   name: kubeflow-operator
   variables:
     {
-      "DashboardURI": "kubeflow.mydomain.io",
+      "DomainName": "kubeflow.mydomain.io",
       "IstioIngressGatewayServiceType": "LoadBalancer",
       "OIDCProviderURL": "https://dev.kubermatic.io/dex",
       "OIDCSecret": "NQh4P9fIDlEyI6EMKW66TLKLdcIStT4C02"
     }
 ```
 
-## Example Gateway
+## OIDC Provider Configuration
+The plugin allows pointing to an external OIDC provider of user's choice. To have OIDC working, the provider itself needs to be configured as well - e.g. in case it is a Dex instance, a `staticClients` entry needs to be added:
+```yaml
+  staticClients:
+    - RedirectURIs:
+        - http://kubeflow.mydomain.io/login/oidc
+      id: kubeflow-oidc-authservice
+      name: kubeflow-oidc-authservice
+      secret: NQh4P9fIDlEyI6EMKW66TLKLdcIStT4C02
+```
+
+## TLS Configuration
+If TLS is enabled, the addon will automatically issue a certificate for the specified `DomainName` using cert-manager and Let's Encrypt ACME. However, due to some Istio-related issues, the Istio configuration needs to be manually adapted with a new `Gateway` and `VirtualService` to let ACME challenge pass to the solver pods. Once the certificate is successfully issued, these can be removed.
+
+### Example Gateway:
 ```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -56,8 +71,7 @@ spec:
       protocol: HTTP
 ```
 
-
-## Example VirtualService
+### Example VirtualService:
 ```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -68,7 +82,7 @@ spec:
   gateways:
   - challenge
   hosts:
-  - 'kubeflow.example.ru'
+  - 'kubeflow.mydomain.io'
   http:
   - match:
     - method:
@@ -80,18 +94,6 @@ spec:
         host: cm-acme-http-solver-frnh4.istio-system.svc.cluster.local
         port:
           number: 8089
-```
-
-
-## OIDC Provider Configuration
-The plugin allows pointing to an external OIDC provider of user's choice. To have OIDC working, the provider itself needs to be configured as well - e.g. in case it is a Dex instance, a `staticClients` entry needs to be added:
-```yaml
-  staticClients:
-    - RedirectURIs:
-        - http://kubeflow.mydomain.io/login/oidc
-      id: kubeflow-oidc-authservice
-      name: kubeflow-oidc-authservice
-      secret: NQh4P9fIDlEyI6EMKW66TLKLdcIStT4C02
 ```
 
 ## Addon Maintenance
