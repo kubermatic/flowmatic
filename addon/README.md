@@ -9,12 +9,12 @@ The KubeFlow addon provides the following optional config options:
 - `OIDCSecret` (text): Secret string shared between the OIDC provider and KubeFlow. If not provided, [this default](https://github.com/kubeflow/manifests/blob/master/istio/oidc-authservice/base/params.env#L5) is used (insecure!).
 
 ## Example Addon Resources
-For the KubeFlow addon:
+For the Kubeflow addon:
 ```yaml
 apiVersion: kubermatic.k8s.io/v1
 kind: Addon
 metadata:
-  name: kubeflow-operator
+  name: kubeflow
   namespace: cluster-bjg9qmhctj
   ownerReferences:
   - apiVersion: kubermatic.k8s.io/v1
@@ -28,7 +28,7 @@ spec:
     kind: Cluster
     name: bjg9qmhctj
     uid: 30c13f8b-235e-4512-8673-d9b0f3a41f27
-  name: kubeflow-operator
+  name: kubeflow
   variables:
     {
       "DomainName": "kubeflow.mydomain.io",
