@@ -1,7 +1,7 @@
 apiVersion: kubermatic.k8s.io/v1
 kind: Addon
 metadata:
-  name: kubeflow-operator
+  name: kubeflow
   namespace: <NAMESPACE>
   ownerReferences:
   - apiVersion: kubermatic.k8s.io/v1
@@ -15,12 +15,10 @@ spec:
     kind: Cluster
     name: <CLUSTER_NAME>
     uid: <CLUSTER_UID>
-  name: kubeflow-operator
+  name: kubeflow
   variables:
-    {
-      "DashboardURI": "kubeflow.mydomain.io",
-      "IstioIngressGatewayServiceType": "LoadBalancer",
-      "OIDCProviderURL": "https://dev.kubermatic.io/dex",
-      "OIDCSecret": "NQh4P9fIDlEyI6EMKW66TLKLdcIStT4C02",
-      "EnableTLS": false
-    }
+    ExposeLoadBalancer: true
+    EnableTLS: true
+    DomainName: kubeflow.mydomain.io
+    OIDCProviderURL: https://dev.kubermatic.io/dex
+    OIDCSecret: NQh4P9fIDlEyI6EMKW66TLKLdcIStT4C02

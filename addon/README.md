@@ -2,9 +2,9 @@
 This is a KubeFlow [addon for Kubermatic Kubernetes Platform](https://docs.kubermatic.com/kubermatic/master/advanced/addons/).
 
 The KubeFlow addon provides the following optional config options:
+- `ExposeLoadBalancer` (boolean): If true, the Kubeflow dashboard will be exposed via a `LoadBalancer` service instead of a `NodePort`.
 - `EnableTLS` (boolean): If true, TLS will be enabled, and a certificate will be automatically issued for the specified `DomainName`.
 - `DomainName` (text): Domain name that will be used to access the KubeFlow dashboard. Make sure to set up you DNS accordingly.
-- `IstioIngressGatewayServiceType` (text): Type of the istio-ingressgateway service, used to access KubeFlow dashboard. It can be set to `ClusterIP`, `NodePort` or `LoadBalancer`.
 - `OIDCProviderURL` (text): URL of external OIDC provider, e.g. Kubermatic Dex instance. Make sure that `DomainName` is specified if you are using this. If not provided, static user authentication will be used.
 - `OIDCSecret` (text): Secret string shared between the OIDC provider and KubeFlow. If not provided, [this default](https://github.com/kubeflow/manifests/blob/master/istio/oidc-authservice/base/params.env#L5) is used (insecure!).
 
@@ -30,12 +30,11 @@ spec:
     uid: 30c13f8b-235e-4512-8673-d9b0f3a41f27
   name: kubeflow
   variables:
-    {
-      "DomainName": "kubeflow.mydomain.io",
-      "IstioIngressGatewayServiceType": "LoadBalancer",
-      "OIDCProviderURL": "https://dev.kubermatic.io/dex",
-      "OIDCSecret": "NQh4P9fIDlEyI6EMKW66TLKLdcIStT4C02"
-    }
+    ExposeLoadBalancer: true
+    EnableTLS: true
+    DomainName: kubeflow.mydomain.io
+    OIDCProviderURL: https://dev.kubermatic.io/dex
+    OIDCSecret: NQh4P9fIDlEyI6EMKW66TLKLdcIStT4C02
 ```
 
 ## DNS Setup

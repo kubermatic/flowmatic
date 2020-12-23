@@ -139,15 +139,12 @@ spec:
       parameters:
       - name: namespace
         value: istio-system
-{{ if eq .Variables.IstioIngressGatewayServiceType "LoadBalancer" }}
+{{ if .Variables.ExposeLoadBalancer }}
       - name: serviceType
         value: LoadBalancer
-{{ else if eq .Variables.IstioIngressGatewayServiceType "NodePort" }}
+{{ else }}
       - name: serviceType
         value: NodePort
-{{ else if eq .Variables.IstioIngressGatewayServiceType "ClusterIP" }}
-      - name: serviceType
-        value: ClusterIP
 {{ end }}
       repoRef:
         name: flowmatic

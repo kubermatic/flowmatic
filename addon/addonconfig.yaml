@@ -57,6 +57,11 @@ spec:
     LjMgMjUuMyA3LjQtMjUuM2g1LjRsNy4zIDI1LjMgNy40LTI1LjNoNS43bC0xMC4xIDMyaC02LjFs
     LTYuOC0yNC42LTYuOCAyNC42aC02LjVsLTkuOS0zMnoiLz4KPC9zdmc+Cg==
   formSpec:
+    - displayName: "Expose via LoadBalancer"
+      internalName: "ExposeLoadBalancer"
+      helpText: "The Kubeflow dashboard will be exposed via a LoadBalancer service instead of a NodePort service."
+      required: false
+      type: boolean
     - displayName: "Enable TLS"
       internalName: "EnableTLS"
       helpText: "TLS will be enabled and a certificate will be automatically issued for the specified domain name."
@@ -67,18 +72,13 @@ spec:
       helpText: "Domain name for accessing the Kubeflow dashboard. Make sure to set up your DNS accordingly."
       required: false
       type: text
-    - displayName: "Istio Ingress Gateway Service Type"
-      internalName: "IstioIngressGatewayServiceType"
-      helpText: "Type of the ingress gateway service, used to access dashboard (ClusterIP / NodePort / LoadBalancer)."
-      required: false
-      type: text
     - displayName: "OIDC Provider URL"
       internalName: "OIDCProviderURL"
-      helpText: "URL of external OIDC provider, e.g. the Kubermatic Dex instance. If not provided, static users are used."
+      helpText: "URL of external OIDC provider, e.g. the Kubermatic Dex instance. If not provided, static users will be used."
       required: false
       type: text
     - displayName: "OIDC Secret"
       internalName: "OIDCSecret"
-      helpText: "Secret string shared between the OIDC provider and Kubeflow. If not provided, default one is used."
+      helpText: "Secret string shared between the OIDC provider and Kubeflow. If not provided, the default one will be used."
       required: false
       type: text
