@@ -1,5 +1,8 @@
 # KubeFlow Addon for Kubermatic Kubernetes Platform
 This is a KubeFlow [addon for Kubermatic Kubernetes Platform](https://docs.kubermatic.com/kubermatic/master/advanced/addons/).
+Currently, we have 2 KubeFlow addons:
+- `kubeflow` is the addon with manifest on KubeFlow master branch.
+- `kubeflow.v1.2.0` is the addon with manifest on KubeFlow v1.2-branch. For deploying this addon, extra tweaking of apiserver flags is needed to enable [service account token volume projection](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection) for istio.
 
 The KubeFlow addon provides the following optional config options:
 - `ExposeLoadBalancer` (boolean): If true, the Kubeflow dashboard will be exposed via a `LoadBalancer` service instead of a `NodePort`.
