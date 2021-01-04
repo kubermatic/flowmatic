@@ -38,7 +38,7 @@ spec:
 ```
 
 ## DNS Setup
-If using `IstioIngressGatewayServiceType=LoadBalancer`, to access the Kubeflow dashboard, finish the DNS setup of you installation. In order to do that, retrieve the external IP / DNS name allocated for the istio-ingressgateway service:
+If using `ExposeLoadBalancer=true`, to access the Kubeflow dashboard, finish the DNS setup of you installation. In order to do that, retrieve the external IP / DNS name allocated for the istio-ingressgateway service:
 ```bash
 $ kubectl get svc istio-ingressgateway -n istio-system
 NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP                                                                  PORT(S)                                                                                                                                      AGE
