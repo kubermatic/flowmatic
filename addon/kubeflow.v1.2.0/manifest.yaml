@@ -2,6 +2,9 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: kubeflow
+  labels:
+    control-plane: kubeflow
+    istio-injection: enabled
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
