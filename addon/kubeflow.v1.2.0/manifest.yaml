@@ -207,8 +207,6 @@ spec:
         value: {{ .Cluster.OwnerEmail }}
       - name: acmeUrl
         value: https://acme-v02.api.letsencrypt.org/directory
-      - name: namespace
-        value: istio-system
       - name: domain
         value: {{ .Variables.DomainName }}
       repoRef:
@@ -234,6 +232,10 @@ spec:
           value: http{{ if .Variables.EnableTLS }}s{{ end }}://{{ .Variables.DomainName }}/login/oidc
         - name: client_id
           value: kubeflow-v1.2.0-oidc-authservice
+        {{ if .Variables.EnableTLS }}
+        - name: skip_auth_uri
+          value: "/.well-known"
+        {{ end }}
       {{ if .Variables.OIDCSecret }}
         - name: application_secret
           value: {{ .Variables.OIDCSecret }}
@@ -253,8 +255,10 @@ spec:
           value: /login/oidc
         - name: oidc_auth_url
           value: /dex/auth
+        {{ if .Variables.EnableTLS }}
         - name: skip_auth_uri
           value: "/dex /.well-known"
+        {{ end }}
         - name: application_secret
           value: pUBnBOY80SnXgjibTYM9ZWNzY2xreNGQok
       repoRef:
