@@ -213,7 +213,7 @@ spec:
         value: {{ .Variables.DomainName }}
       repoRef:
         name: flowmatic
-        path: manifests/istio/ingressgateway-acme-cert
+        path: manifests/istio/ingressgateway-acme-cert/base
     name: ingressgateway-acme-cert
 {{ end }}
   - kustomizeConfig:
@@ -253,6 +253,8 @@ spec:
           value: /login/oidc
         - name: oidc_auth_url
           value: /dex/auth
+        - name: skip_auth_uri
+          value: "/dex /.well-known"
         - name: application_secret
           value: pUBnBOY80SnXgjibTYM9ZWNzY2xreNGQok
       repoRef:
