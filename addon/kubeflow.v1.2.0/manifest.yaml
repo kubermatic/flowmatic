@@ -175,6 +175,16 @@ spec:
         name: manifests
         path: istio/istio/base
     name: istio
+{{ if and .Variables.EnableTLS .Variables.DomainName }}
+  - kustomizeConfig:
+      parameters:
+      - name: gatewaySelector
+        value: ingressgateway
+      repoRef:
+        name: manifests
+        path: istio/istio/overlays/https-gateway
+    name: istio-https-gateway
+{{ end }}
   - kustomizeConfig:
       repoRef:
         name: manifests
@@ -190,6 +200,22 @@ spec:
         name: manifests
         path: stacks/kubernetes/application/cert-manager
     name: cert-manager
+{{ if and .Variables.EnableTLS .Variables.DomainName }}
+  - kustomizeConfig:
+      parameters:
+      - name: email
+        value: {{ .Cluster.OwnerEmail }}
+      - name: acmeUrl
+        value: https://acme-v02.api.letsencrypt.org/directory
+      - name: namespace
+        value: istio-system
+      - name: domain
+        value: {{ .Variables.DomainName }}
+      repoRef:
+        name: flowmatic
+        path: manifests/istio/ingressgateway-acme-cert
+    name: ingressgateway-acme-cert
+{{ end }}
   - kustomizeConfig:
       repoRef:
         name: manifests
