@@ -116,5 +116,5 @@ spec:
     name: kfserving
   repos:
   - name: manifests
-    uri: github.com/jiachengxu/flowmatic?ref=git-module
+    uri: github.com/kubermatic/flowmatic?ref=master
   version: v1.2-branch

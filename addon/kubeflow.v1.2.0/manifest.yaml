@@ -130,7 +130,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        image: quay.io/kubermatic/kubeflow-operator:git-module
+        image: quay.io/kubermatic/kubeflow-operator:latest
         imagePullPolicy: Always
         name: kubeflow-operator
       serviceAccountName: kubeflow-operator
@@ -301,5 +301,5 @@ spec:
     name: kfserving
   repos:
     - name: manifests
-      uri: github.com/jiachengxu/flowmatic?ref=git-module
+      uri: github.com/kubermatic/flowmatic?ref=master
   version: v1.2-branch
