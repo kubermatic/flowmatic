@@ -22,50 +22,50 @@ spec:
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: namespaces/base
+        path: manifests/kubeflow-manifests/namespaces/base
     name: namespaces
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: application/v3
+        path: manifests/kubeflow-manifests/application/v3
     name: application
   - kustomizeConfig:
       parameters:
       - name: serviceType
         value: LoadBalancer
       repoRef:
-        name: flowmatic
+        name: manifests
         path: manifests/istio/istio-1-3-1-stack
     name: istio-stack
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: stacks/kubernetes/application/cluster-local-gateway-1-3-1
+        path: manifests/kubeflow-manifests/stacks/kubernetes/application/cluster-local-gateway-1-3-1
     name: cluster-local-gateway
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: istio/istio/base
+        path: manifests/kubeflow-manifests/istio/istio/base
     name: istio
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: stacks/kubernetes/application/cert-manager-crds
+        path: manifests/kubeflow-manifests/stacks/kubernetes/application/cert-manager-crds
     name: cert-manager-crds
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: stacks/kubernetes/application/cert-manager-kube-system-resources
+        path: manifests/kubeflow-manifests/stacks/kubernetes/application/cert-manager-kube-system-resources
     name: cert-manager-kube-system-resources
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: stacks/kubernetes/application/cert-manager
+        path: manifests/kubeflow-manifests/stacks/kubernetes/application/cert-manager
     name: cert-manager
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: metacontroller/base
+        path: manifests/kubeflow-manifests/metacontroller/base
     name: metacontroller
   - kustomizeConfig:
       parameters:
@@ -78,42 +78,43 @@ spec:
         - name: application_secret
           value: pUBnBOY80SnXgjibTYM9ZWNzY2xreNGQok
       repoRef:
-        name: flowmatic
+        name: manifests
         path: manifests/oidc-authservice
     name: oidc-authservice
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: stacks/kubernetes/application/dex-auth
+        path: manifests/kubeflow-manifests/stacks/kubernetes/application/dex-auth
     name: dex
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: admission-webhook/bootstrap/overlays/application
+        path: manifests/kubeflow-manifests/admission-webhook/bootstrap/overlays/application
     name: bootstrap
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: spark/spark-operator/overlays/application
+        path: manifests/kubeflow-manifests/spark/spark-operator/overlays/application
     name: spark-operator
   - kustomizeConfig:
+      parameters:
+        - name: admin
+          value: admin@kubeflow.org
       repoRef:
         name: manifests
-        path: stacks/kubernetes
+        path: manifests/stacks/kubernetes
     name: kubeflow-apps
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: knative/installs/generic
+        path: manifests/kubeflow-manifests/knative/installs/generic
     name: knative
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: kfserving/installs/generic
+        path: manifests/kubeflow-manifests/kfserving/installs/generic
     name: kfserving
   repos:
   - name: manifests
-    uri: https://github.com/kubeflow/manifests/archive/v1.2-branch.tar.gz
-  - name: flowmatic
-    uri: https://github.com/kubermatic/flowmatic/archive/master.tar.gz
+    uri: github.com/kubermatic/flowmatic?ref=master
   version: v1.2-branch
