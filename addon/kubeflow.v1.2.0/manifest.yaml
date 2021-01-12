@@ -210,7 +210,7 @@ spec:
       - name: domain
         value: {{ .Variables.DomainName }}
       repoRef:
-        name: flowmatic
+        name: manifests
         path: manifests/istio/ingressgateway-acme-cert/base
     name: ingressgateway-acme-cert
 {{ end }}
