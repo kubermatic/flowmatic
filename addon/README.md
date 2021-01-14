@@ -7,6 +7,7 @@ Currently, we have 2 KubeFlow addons:
 The KubeFlow addon provides the following optional config options:
 - `ExposeLoadBalancer` (boolean): If true, the Kubeflow dashboard will be exposed via a `LoadBalancer` service instead of a `NodePort`.
 - `EnableTLS` (boolean): If true, TLS will be enabled, and a certificate will be automatically issued for the specified `DomainName`.
+- `NVIDIAOperator` (boolean): If true, NVIDIA GPU Operator will be installed. Also installs Node Feature Discovery for Kubernetes.
 - `DomainName` (text): Domain name that will be used to access the KubeFlow dashboard. Make sure to set up you DNS accordingly.
 - `OIDCProviderURL` (text): URL of external OIDC provider, e.g. Kubermatic Dex instance. Make sure that `DomainName` is specified if you are using this. If not provided, static user authentication will be used.
 - `OIDCSecret` (text): Secret string shared between the OIDC provider and KubeFlow. If not provided, [this default](https://github.com/kubeflow/manifests/blob/master/istio/oidc-authservice/base/params.env#L5) is used (insecure!).

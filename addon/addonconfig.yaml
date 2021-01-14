@@ -81,6 +81,11 @@ spec:
       helpText: "TLS will be enabled and a certificate will be automatically issued for the specified domain name."
       required: false
       type: boolean
+    - displayName: "Install NVIDIA GPU Operator"
+      internalName: "NVIDIAOperator"
+      helpText: "NVIDIA GPU Operator will be installed. Also installs Node Feature Discovery for Kubernetes."
+      required: false
+      type: boolean
     - displayName: "Domain Name"
       internalName: "DomainName"
       helpText: "Domain name for accessing the Kubeflow dashboard. Make sure to set up your DNS accordingly."
