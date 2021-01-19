@@ -86,6 +86,11 @@ spec:
       helpText: "NVIDIA GPU Operator will be installed. Also installs Node Feature Discovery for Kubernetes."
       required: false
       type: boolean
+    - displayName: "Install AMD GPU Device Plugin"
+      internalName: "AMDDevicePlugin"
+      helpText: "AMD GPU Device Plugin will be installed. Also installs AMG GPU Node Labeler."
+      required: false
+      type: boolean
     - displayName: "Domain Name"
       internalName: "DomainName"
       helpText: "Domain name for accessing the Kubeflow dashboard. Make sure to set up your DNS accordingly."
