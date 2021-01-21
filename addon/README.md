@@ -12,6 +12,7 @@ The KubeFlow addon provides the following optional config options:
 - `DomainName` (text): Domain name that will be used to access the KubeFlow dashboard. Make sure to set up you DNS accordingly.
 - `OIDCProviderURL` (text): URL of external OIDC provider, e.g. Kubermatic Dex instance. Make sure that `DomainName` is specified if you are using this. If not provided, static user authentication will be used.
 - `OIDCSecret` (text): Secret string shared between the OIDC provider and KubeFlow. If not provided, [this default](https://github.com/kubeflow/manifests/blob/master/istio/oidc-authservice/base/params.env#L5) is used (insecure!).
+- `EnableIstioRBAC` (boolean): Enable Istio RBAC (Role Based Access Control) for multi-tenancy.
 
 ## Example Addon Resources
 For the Kubeflow addon:

@@ -182,8 +182,13 @@ spec:
       - name: gatewaySelector
         value: ingressgateway
 {{ end }}
+{{ if .Variables.EnableIstioRBAC }}
       - name: clusterRbacConfig
         value: "ON"
+{{ else }}
+      - name: clusterRbacConfig
+        value: "OFF"
+{{ end }}
       repoRef:
         name: manifests
         path: istio/istio
