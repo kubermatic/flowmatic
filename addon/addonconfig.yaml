@@ -106,3 +106,8 @@ spec:
       helpText: "Secret string shared between the OIDC provider and Kubeflow. If not provided, the default one will be used."
       required: false
       type: text
+    - displayName: "Enable Istio RBAC"
+      internalName: "EnableIstioRBAC"
+      helpText: "Enable Istio RBAC (Role Based Access Control) for multi-tenancy."
+      required: false
+      type: boolean
