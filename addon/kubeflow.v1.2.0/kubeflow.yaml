@@ -190,7 +190,7 @@ spec:
         value: ingressgateway
       repoRef:
         name: manifests
-        path: manifests/kubeflow-manifests/istio/istio/overlays/https-gateway
+        path: manifests/istio/istio/overlays/https-gateway
     name: istio-https-gateway
 {{ end }}
   - kustomizeConfig:
