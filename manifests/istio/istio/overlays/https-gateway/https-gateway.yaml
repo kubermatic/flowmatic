@@ -1,0 +1,11 @@
+- op: add
+  path: /spec/servers/-
+  value:
+    hosts:
+      - '*'
+    port:
+      name: http
+      number: 80
+      protocol: HTTP
+    tls:
+      httpsRedirect: true
