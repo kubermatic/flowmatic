@@ -16,12 +16,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../../../kubeflow-manifests/istio/istio/overlays/https-gateway
+  - ../../../../kubeflow-manifests/istio/istio/base
 
-patches:
-  - path: https-gateway.yaml
-    target:
-      group: networking.istio.io
-      version: v1alpha3
-      kind: Gateway
-      name: kubeflow-gateway
+patchesStrategicMerge:
+ - https-gateway.yaml
