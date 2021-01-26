@@ -114,7 +114,15 @@ spec:
         name: manifests
         path: manifests/kubeflow-manifests/kfserving/installs/generic
     name: kfserving
+  - kustomizeConfig:
+      parameters:
+        - name: gatewaySelector
+          value: ingressgateway
+      repoRef:
+        name: manifests
+        path: manifests/istio/istio/overlays/https-gateway
+    name: istio-https-gateway
   repos:
   - name: manifests
-    uri: github.com/kubermatic/flowmatic?ref=master
+    uri: github.com/jiachengxu/flowmatic?ref=https
   version: v1.2-branch
