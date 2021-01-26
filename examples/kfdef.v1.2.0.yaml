@@ -45,6 +45,11 @@ spec:
   - kustomizeConfig:
       repoRef:
         name: manifests
+        path: manifests/kubeflow-manifests/istio/istio/base
+    name: istio
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
         path: manifests/kubeflow-manifests/stacks/kubernetes/application/cert-manager-crds
     name: cert-manager-crds
   - kustomizeConfig:
