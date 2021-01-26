@@ -5565,7 +5565,7 @@ spec:
       serviceAccountName: gpu-operator
       containers:
       - name: gpu-operator
-        image: nvcr.io/nvidia/gpu-operator:1.5.0
+        image: nvcr.io/nvidia/gpu-operator:1.5.1
         imagePullPolicy: IfNotPresent
         command: ["gpu-operator"]
         args:
@@ -5649,7 +5649,7 @@ spec:
   toolkit:
     repository: nvcr.io/nvidia/k8s
     image: container-toolkit
-    version: 1.4.2-ubuntu18.04
+    version: 1.4.3-ubuntu18.04
     imagePullPolicy: IfNotPresent
     tolerations: 
       - key: CriticalAddonsOnly
