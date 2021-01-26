@@ -173,15 +173,9 @@ spec:
         path: istio/cluster-local-gateway
     name: cluster-local-gateway
   - kustomizeConfig:
-{{ if and .Variables.EnableTLS .Variables.DomainName }}
-      overlays:
-      - https-gateway
-{{ end }}
       parameters:
-{{ if and .Variables.EnableTLS .Variables.DomainName }}
       - name: gatewaySelector
         value: ingressgateway
-{{ end }}
 {{ if .Variables.EnableIstioRBAC }}
       - name: clusterRbacConfig
         value: "ON"
@@ -190,8 +184,13 @@ spec:
         value: "OFF"
 {{ end }}
       repoRef:
+{{ if and .Variables.EnableTLS .Variables.DomainName }}
+        name: flowmatic
+        path: manifests/istio/istio
+{{ else }}
         name: manifests
         path: istio/istio
+{{ end }}
     name: istio
   - kustomizeConfig:
       repoRef:

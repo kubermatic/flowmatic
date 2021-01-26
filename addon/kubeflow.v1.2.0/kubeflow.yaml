@@ -173,26 +173,22 @@ spec:
   - kustomizeConfig:
       parameters:
 {{ if .Variables.EnableIstioRBAC }}
-        - name: clusterRbacConfig
-          value: "ON_WITH_EXCLUSION"
+      - name: clusterRbacConfig
+        value: "ON_WITH_EXCLUSION"
 {{ else }}
-        - name: clusterRbacConfig
-          value: "OFF"
+      - name: clusterRbacConfig
+        value: "OFF"
 {{ end }}
-      repoRef:
-        name: manifests
-        path: manifests/kubeflow-manifests/istio/istio/base
-    name: istio
-{{ if and .Variables.EnableTLS .Variables.DomainName }}
-  - kustomizeConfig:
-      parameters:
       - name: gatewaySelector
         value: ingressgateway
       repoRef:
         name: manifests
-        path: manifests/kubeflow-manifests/istio/istio/overlays/https-gateway
-    name: istio-https-gateway
+{{ if and .Variables.EnableTLS .Variables.DomainName }}
+        path: manifests/istio/istio/base
+{{ else }}
+        path: manifests/kubeflow-manifests/istio/istio/base
 {{ end }}
+    name: istio
   - kustomizeConfig:
       repoRef:
         name: manifests
