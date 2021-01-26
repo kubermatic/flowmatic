@@ -4296,8 +4296,12 @@ spec:
                   - crio
                   - containerd
                   type: string
-                deployGFD:
-                  type: boolean
+                defaultGPUMode:
+                  enum:
+                  - passthrough
+                  - baremetal
+                  - vgpu
+                  type: string
                 validator:
                   properties:
                     image:
@@ -4320,7 +4324,6 @@ spec:
                   type: object
               required:
               - defaultRuntime
-              - deployGFD
               type: object
             toolkit:
               description: ComponentSpec defines the properties for individual GPU
@@ -5562,7 +5565,7 @@ spec:
       serviceAccountName: gpu-operator
       containers:
       - name: gpu-operator
-        image: nvcr.io/nvidia/gpu-operator:1.4.0
+        image: nvcr.io/nvidia/gpu-operator:1.5.1
         imagePullPolicy: IfNotPresent
         command: ["gpu-operator"]
         args:
@@ -5622,10 +5625,12 @@ spec:
   operator:
     deployGFD: true
     defaultRuntime: docker
+    defaultGPUMode: passthrough
     validator:
       repository: nvcr.io/nvidia/k8s
       image: cuda-sample
       version: vectoradd-cuda10.2
+      imagePullPolicy: IfNotPresent
   driver:
     repository: nvcr.io/nvidia
     image: driver
@@ -5644,7 +5649,7 @@ spec:
   toolkit:
     repository: nvcr.io/nvidia/k8s
     image: container-toolkit
-    version: 1.4.0-ubuntu18.04
+    version: 1.4.3-ubuntu18.04
     imagePullPolicy: IfNotPresent
     tolerations: 
       - key: CriticalAddonsOnly
@@ -5661,7 +5666,7 @@ spec:
   devicePlugin:
     repository: nvcr.io/nvidia
     image: k8s-device-plugin
-    version: v0.7.1
+    version: v0.7.3
     imagePullPolicy: IfNotPresent
     nodeSelector: 
       nvidia.com/gpu.present: "true"
@@ -5683,7 +5688,7 @@ spec:
   gfd:
     repository: nvcr.io/nvidia
     image: gpu-feature-discovery
-    version: v0.2.2
+    version: v0.3.0
     imagePullPolicy: IfNotPresent
     nodeSelector: 
       nvidia.com/gpu.present: "true"
