@@ -16,7 +16,7 @@
   path: /spec/servers/-
   value:
     hosts:
-      - '*'
+    - '*'
     port:
       name: http
       number: 80
