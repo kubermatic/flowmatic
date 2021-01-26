@@ -45,11 +45,6 @@ spec:
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: manifests/kubeflow-manifests/istio/istio/base
-    name: istio
-  - kustomizeConfig:
-      repoRef:
-        name: manifests
         path: manifests/kubeflow-manifests/stacks/kubernetes/application/cert-manager-crds
     name: cert-manager-crds
   - kustomizeConfig:
@@ -114,15 +109,7 @@ spec:
         name: manifests
         path: manifests/kubeflow-manifests/kfserving/installs/generic
     name: kfserving
-  - kustomizeConfig:
-      parameters:
-        - name: gatewaySelector
-          value: ingressgateway
-      repoRef:
-        name: manifests
-        path: manifests/istio/istio/overlays/https-gateway
-    name: istio-https-gateway
   repos:
   - name: manifests
-    uri: github.com/jiachengxu/flowmatic?ref=https
+    uri: github.com/kubermatic/flowmatic?ref=master
   version: v1.2-branch
