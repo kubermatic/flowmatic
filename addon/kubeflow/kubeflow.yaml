@@ -16,6 +16,9 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: kubeflow
+  labels:
+    control-plane: kubeflow
+    istio-injection: enabled
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
@@ -140,19 +143,17 @@ metadata:
 spec:
   applications:
   - kustomizeConfig:
-      parameters:
-      - name: namespace
-        value: istio-system
       repoRef:
         name: manifests
-        path: istio/istio-crds
-    name: istio-crds
+        path: manifests/kubeflow-manifests/namespaces/base
+    name: namespaces
   - kustomizeConfig:
-      overlays:
-      - ingressgateway
+      repoRef:
+        name: manifests
+        path: manifests/kubeflow-manifests/application/v3
+    name: application
+  - kustomizeConfig:
       parameters:
-      - name: namespace
-        value: istio-system
 {{ if .Variables.ExposeLoadBalancer }}
       - name: serviceType
         value: LoadBalancer
@@ -161,153 +162,47 @@ spec:
         value: NodePort
 {{ end }}
       repoRef:
-        name: flowmatic
-        path: manifests/istio/istio-install
-    name: istio-install
+        name: manifests
+        path: manifests/istio/istio-1-3-1-stack
+    name: istio-stack
   - kustomizeConfig:
-      parameters:
-      - name: namespace
-        value: istio-system
       repoRef:
         name: manifests
-        path: istio/cluster-local-gateway
+        path: manifests/kubeflow-manifests/stacks/kubernetes/application/cluster-local-gateway-1-3-1
     name: cluster-local-gateway
   - kustomizeConfig:
       parameters:
-      - name: gatewaySelector
-        value: ingressgateway
 {{ if .Variables.EnableIstioRBAC }}
       - name: clusterRbacConfig
-        value: "ON"
+        value: "ON_WITH_EXCLUSION"
 {{ else }}
       - name: clusterRbacConfig
         value: "OFF"
 {{ end }}
+      - name: gatewaySelector
+        value: ingressgateway
       repoRef:
-{{ if and .Variables.EnableTLS .Variables.DomainName }}
-        name: flowmatic
-        path: manifests/istio/istio
-{{ else }}
         name: manifests
-        path: istio/istio
+{{ if and .Variables.EnableTLS .Variables.DomainName }}
+        path: manifests/istio/istio/base
+{{ else }}
+        path: manifests/kubeflow-manifests/istio/istio/base
 {{ end }}
     name: istio
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: application/application-crds
-    name: application-crds
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: application/application
-    name: application
-  - kustomizeConfig:
-      parameters:
-      - name: namespace
-        value: cert-manager
-      repoRef:
-        name: manifests
-        path: cert-manager/cert-manager-crds
+        path: manifests/kubeflow-manifests/stacks/kubernetes/application/cert-manager-crds
     name: cert-manager-crds
-{{ if and .Variables.OIDCProviderURL .Variables.DomainName }}
   - kustomizeConfig:
-      overlays:
-        - application
-      parameters:
-        - name: namespace
-          value: istio-system
-        - name: userid-header
-          value: kubeflow-userid
-        - name: oidc_provider
-          value: {{ .Variables.OIDCProviderURL }}
-        - name: oidc_auth_url
-          value: {{ .Variables.OIDCProviderURL }}/auth
-        - name: oidc_redirect_uri
-          value: http{{ if .Variables.EnableTLS }}s{{ end }}://{{ .Variables.DomainName }}/login/oidc
-      {{ if .Variables.EnableTLS }}
-        - name: skip_auth_uri
-          value: /.well-known/acme-challenge/
-      {{ end }}
-        - name: client_id
-          value: kubeflow-oidc-authservice
-      {{ if .Variables.OIDCSecret }}
-        - name: application_secret
-          value: {{ .Variables.OIDCSecret }}
-      {{ end }}
       repoRef:
         name: manifests
-        path: istio/oidc-authservice
-    name: oidc-authservice
-{{ else }}
-  - kustomizeConfig:
-      overlays:
-        - application
-      parameters:
-        - name: namespace
-          value: istio-system
-        - name: userid-header
-          value: kubeflow-userid
-        - name: oidc_provider
-          value: http://dex.auth.svc.cluster.local:5556/dex
-        - name: oidc_redirect_uri
-          value: /login/oidc
-        - name: oidc_auth_url
-          value: /dex/auth
-      {{ if .Variables.EnableTLS }}
-        - name: skip_auth_uri
-          value: "/dex /.well-known/acme-challenge/"
-      {{ else }}
-        - name: skip_auth_uri
-          value: /dex
-      {{ end }}
-        - name: client_id
-          value: kubeflow-oidc-authservice
-      repoRef:
-        name: manifests
-        path: istio/oidc-authservice
-    name: oidc-authservice
-  - kustomizeConfig:
-      overlays:
-        - istio
-      parameters:
-        - name: namespace
-          value: auth
-        - name: issuer
-          value: http://dex.auth.svc.cluster.local:5556/dex
-        - name: client_id
-          value: kubeflow-oidc-authservice
-        - name: oidc_redirect_uris
-          value: '["/login/oidc"]'
-        - name: static_email
-          value: admin@kubeflow.org
-        - name: static_password_hash
-          value: $2y$12$ruoM7FqXrpVgaol44eRZW.4HWS8SAvg6KYVVSCIwKQPBmTpCm.EeO
-      repoRef:
-        name: manifests
-        path: dex-auth/dex-crds
-    name: dex
-{{ end }}
-  - kustomizeConfig:
-      parameters:
-      - name: namespace
-        value: kube-system
-      repoRef:
-        name: manifests
-        path: cert-manager/cert-manager-kube-system-resources
+        path: manifests/kubeflow-manifests/stacks/kubernetes/application/cert-manager-kube-system-resources
     name: cert-manager-kube-system-resources
   - kustomizeConfig:
-      overlays:
-      - self-signed
-      - application
-      parameters:
-      - name: namespace
-        value: cert-manager
       repoRef:
         name: manifests
-        path: cert-manager/cert-manager
+        path: manifests/kubeflow-manifests/stacks/kubernetes/application/cert-manager
     name: cert-manager
 {{ if and .Variables.EnableTLS .Variables.DomainName }}
   - kustomizeConfig:
@@ -316,275 +211,99 @@ spec:
         value: {{ .Cluster.OwnerEmail }}
       - name: acmeUrl
         value: https://acme-v02.api.letsencrypt.org/directory
-      - name: namespace
-        value: istio-system
       - name: domain
         value: {{ .Variables.DomainName }}
       repoRef:
-        name: flowmatic
-        path: manifests/istio/ingressgateway-acme-cert
+        name: manifests
+        path: manifests/istio/ingressgateway-acme-cert/base
     name: ingressgateway-acme-cert
 {{ end }}
   - kustomizeConfig:
       repoRef:
         name: manifests
-        path: metacontroller
+        path: manifests/kubeflow-manifests/metacontroller/base
     name: metacontroller
+{{ if and .Variables.OIDCProviderURL .Variables.DomainName }}
   - kustomizeConfig:
-      overlays:
-      - istio
-      - application
-      repoRef:
-        name: manifests
-        path: argo
-    name: argo
-  - kustomizeConfig:
-      repoRef:
-        name: manifests
-        path: kubeflow-roles
-    name: kubeflow-roles
-  - kustomizeConfig:
-      overlays:
-      - istio
-      - application
       parameters:
-      - name: userid-header
-        value: kubeflow-userid
+        - name: userid-header
+          value: kubeflow-userid
+        - name: oidc_provider
+          value: {{ .Variables.OIDCProviderURL }}
+        - name: oidc_auth_url
+          value: {{ .Variables.OIDCProviderURL }}/auth
+        - name: oidc_redirect_uri
+          value: http{{ if .Variables.EnableTLS }}s{{ end }}://{{ .Variables.DomainName }}/login/oidc
+        - name: client_id
+          value: kubeflow-oidc-authservice
+        {{ if .Variables.EnableTLS }}
+        - name: skip_auth_uri
+          value: "/.well-known"
+        {{ end }}
+      {{ if .Variables.OIDCSecret }}
+        - name: application_secret
+          value: {{ .Variables.OIDCSecret }}
+      {{ end }}
       repoRef:
         name: manifests
-        path: common/centraldashboard
-    name: centraldashboard
+        path: manifests/oidc-authservice
+    name: oidc-authservice
+{{ else }}
   - kustomizeConfig:
-      overlays:
-      - application
+      parameters:
+        - name: userid-header
+          value: kubeflow-userid
+        - name: oidc_provider
+          value: http://dex.auth.svc.cluster.local:5556/dex
+        - name: oidc_redirect_uri
+          value: /login/oidc
+        - name: oidc_auth_url
+          value: /dex/auth
+        {{ if .Variables.EnableTLS }}
+        - name: skip_auth_uri
+          value: "/dex /.well-known"
+        {{ end }}
+        - name: application_secret
+          value: pUBnBOY80SnXgjibTYM9ZWNzY2xreNGQok
       repoRef:
         name: manifests
-        path: admission-webhook/bootstrap
+        path: manifests/oidc-authservice
+    name: oidc-authservice
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: manifests/kubeflow-manifests/stacks/kubernetes/application/dex-auth
+    name: dex
+  {{ end }}
+  - kustomizeConfig:
+      repoRef:
+        name: manifests
+        path: manifests/kubeflow-manifests/admission-webhook/bootstrap/overlays/application
     name: bootstrap
   - kustomizeConfig:
-      overlays:
-      - application
       repoRef:
         name: manifests
-        path: admission-webhook/webhook
-    name: webhook
-  - kustomizeConfig:
-      overlays:
-      - istio
-      - application
-      parameters:
-      - name: userid-header
-        value: kubeflow-userid
-      repoRef:
-        name: manifests
-        path: jupyter/jupyter-web-app
-    name: jupyter-web-app
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: spark/spark-operator
+        path: manifests/kubeflow-manifests/spark/spark-operator/overlays/application
     name: spark-operator
   - kustomizeConfig:
-      overlays:
-      - istio
-      - application
-      - db
-      repoRef:
-        name: manifests
-        path: metadata
-    name: metadata
-  - kustomizeConfig:
-      overlays:
-      - istio
-      - application
-      repoRef:
-        name: manifests
-        path: jupyter/notebook-controller
-    name: notebook-controller
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: pytorch-job/pytorch-job-crds
-    name: pytorch-job-crds
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: pytorch-job/pytorch-operator
-    name: pytorch-operator
-  - kustomizeConfig:
-      overlays:
-      - application
       parameters:
-      - name: namespace
-        value: knative-serving
+        - name: admin
+          value: "{{ .Cluster.OwnerEmail }}"
       repoRef:
         name: manifests
-        path: knative/knative-serving-crds
-    name: knative-crds
+        path: manifests/stacks/kubernetes
+    name: kubeflow-apps
   - kustomizeConfig:
-      overlays:
-      - application
-      parameters:
-      - name: namespace
-        value: knative-serving
       repoRef:
         name: manifests
-        path: knative/knative-serving-install
-    name: knative-install
+        path: manifests/kubeflow-manifests/knative/installs/generic
+    name: knative
   - kustomizeConfig:
-      overlays:
-      - application
       repoRef:
         name: manifests
-        path: kfserving/kfserving-crds
-    name: kfserving-crds
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: kfserving/kfserving-install
-    name: kfserving-install
-  - kustomizeConfig:
-      overlays:
-      - application
-      parameters:
-      - name: usageId
-        value: <randomly-generated-id>
-      - name: reportUsage
-        value: "true"
-      repoRef:
-        name: manifests
-        path: common/spartakus
-    name: spartakus
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: tf-training/tf-job-crds
-    name: tf-job-crds
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: tf-training/tf-job-operator
-    name: tf-job-operator
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: katib/katib-crds
-    name: katib-crds
-  - kustomizeConfig:
-      overlays:
-      - application
-      - istio
-      repoRef:
-        name: manifests
-        path: katib/katib-controller
-    name: katib-controller
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: pipeline/api-service
-    name: api-service
-  - kustomizeConfig:
-      overlays:
-      - application
-      parameters:
-      - name: minioPvcName
-        value: minio-pv-claim
-      repoRef:
-        name: manifests
-        path: pipeline/minio
-    name: minio
-  - kustomizeConfig:
-      overlays:
-      - application
-      parameters:
-      - name: mysqlPvcName
-        value: mysql-pv-claim
-      repoRef:
-        name: manifests
-        path: pipeline/mysql
-    name: mysql
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: pipeline/persistent-agent
-    name: persistent-agent
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: pipeline/pipelines-runner
-    name: pipelines-runner
-  - kustomizeConfig:
-      overlays:
-      - istio
-      - application
-      repoRef:
-        name: manifests
-        path: pipeline/pipelines-ui
-    name: pipelines-ui
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: pipeline/pipelines-viewer
-    name: pipelines-viewer
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: pipeline/scheduledworkflow
-    name: scheduledworkflow
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: pipeline/pipeline-visualization-service
-    name: pipeline-visualization-service
-  - kustomizeConfig:
-      overlays:
-      - application
-      - istio
-      parameters:
-      - name: admin
-        value: "{{ .Cluster.OwnerEmail }}"
-      - name: userid-header
-        value: kubeflow-userid
-      repoRef:
-        name: manifests
-        path: profiles
-    name: profiles
-  - kustomizeConfig:
-      overlays:
-      - application
-      repoRef:
-        name: manifests
-        path: seldon/seldon-core-operator
-    name: seldon-core-operator
+        path: manifests/kubeflow-manifests/kfserving/installs/generic
+    name: kfserving
   repos:
-  - name: manifests
-    uri: https://github.com/kubeflow/manifests/archive/master.tar.gz
-  - name: flowmatic
-    uri: https://github.com/kubermatic/flowmatic/archive/master.tar.gz
-  version: master
+    - name: manifests
+      uri: github.com/kubermatic/flowmatic?ref=master
+  version: v1.2-branch
