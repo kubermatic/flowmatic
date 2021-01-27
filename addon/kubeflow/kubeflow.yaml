@@ -235,7 +235,7 @@ spec:
         - name: oidc_redirect_uri
           value: http{{ if .Variables.EnableTLS }}s{{ end }}://{{ .Variables.DomainName }}/login/oidc
         - name: client_id
-          value: kubeflow-v1.2.0-oidc-authservice
+          value: kubeflow-oidc-authservice
         {{ if .Variables.EnableTLS }}
         - name: skip_auth_uri
           value: "/.well-known"
