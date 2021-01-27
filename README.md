@@ -8,13 +8,13 @@ upstream Kubeflow manifests for KKP needs.
 
 ## Installation
 
-Please see [the documentation][21] for the Kubeflow Addon installation instructions.
+Please see [the documentation][22] for the Kubeflow Addon installation instructions.
 
 _The code and sample YAML files in the master branch of the Flowmatic repository are under active development and are not guaranteed to be stable. Use them at your own risk!_
 
 ## More information
 
-[The documentation][21] provides a list of prerequisites, installation instructions and a list of limitations and known issues.
+[The documentation][22] provides a list of prerequisites, installation instructions and a list of limitations and known issues.
 
 Please use the version selector at the top of the site to ensure you are using the appropriate documentation for your version of Kubermatic.
 
